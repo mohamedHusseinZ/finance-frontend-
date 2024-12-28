@@ -1,10 +1,9 @@
-// src/components/Login.js
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook for redirection
 
 const Login = ({ setToken }) => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // Loading state
@@ -12,10 +11,17 @@ const Login = ({ setToken }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate form inputs
+    if (!email || !password) {
+      setError("Please provide both email and password.");
+      return;
+    }
+
     setLoading(true); // Set loading state to true
     try {
       const response = await axios.post("http://localhost:5000/login", {
-        username,
+        email,
         password,
       });
       setToken(response.data.token); // Save token in App state
@@ -37,10 +43,10 @@ const Login = ({ setToken }) => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"

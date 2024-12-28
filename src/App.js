@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Up
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
+import UserProfile from './components/UserProfile'; 
 import './App.css';
 
 const App = () => {
@@ -22,6 +23,10 @@ const App = () => {
         <Route
           path="/dashboard"
           element={token ? <Dashboard token={token} /> : <Login setToken={handleTokenChange} />}
+        />
+        <Route
+          path="/profile"
+          element={token ? <UserProfile token={token} /> : <Login setToken={handleTokenChange} />}
         />
       </Routes>
     </Router>

@@ -1,10 +1,9 @@
-// src/components/Register.js
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook for redirection
 
 const Register = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false); // Loading state
@@ -13,21 +12,22 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username || !password) {
-      setMessage("Please fill out both fields.");
+    // Validate form inputs
+    if (!email || !password) {
+      setMessage("Please fill out both email and password.");
       return;
     }
 
     setLoading(true); // Set loading state to true
     try {
-      const response = await axios.post("http://localhost:5000/register", { username, password });
+      const response = await axios.post("http://localhost:5000/register", { email, password });
       setMessage(response.data.message);
       setLoading(false); // Set loading state to false after successful registration
       navigate("/"); // Redirect to login page after successful registration
     } catch (error) {
       setLoading(false); // Set loading state to false on error
       if (error.response && error.response.status === 400) {
-        setMessage("Username already taken. Please choose a different one.");
+        setMessage("Email already registered. Please choose a different one.");
       } else {
         setMessage("Error: Unable to register user.");
       }
@@ -39,10 +39,10 @@ const Register = () => {
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
@@ -55,6 +55,9 @@ const Register = () => {
         </button>
       </form>
       {message && <p>{message}</p>}
+      <p>
+        Already have an account? <a href="/login">Login here</a>
+      </p>
     </div>
   );
 };
