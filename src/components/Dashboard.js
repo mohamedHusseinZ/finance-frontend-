@@ -11,10 +11,6 @@ const Dashboard = ({ token }) => {
     category: "",
   });
   const [categories, setCategories] = useState([]);
-  const [dateFilter, setDateFilter] = useState({
-    startDate: "",
-    endDate: "",
-  });
   const [report, setReport] = useState(null);
 
   // Fetching expenses, balances, categories, and initializing the dashboard
@@ -95,20 +91,6 @@ const Dashboard = ({ token }) => {
     }
   };
 
-  // Handle filtering expenses by date
-  const handleDateFilter = async () => {
-    try {
-      const { startDate, endDate } = dateFilter;
-      const response = await axios.get("http://localhost:5000/expenses_by_date", {
-        params: { start_date: startDate, end_date: endDate },
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setExpenses(response.data.expenses);
-    } catch (error) {
-      console.log("Error filtering expenses by date", error);
-    }
-  };
-
   // Handle resetting the balances
   const handleResetBalances = async () => {
     try {
@@ -174,22 +156,6 @@ const Dashboard = ({ token }) => {
           ))}
         </select>
         <button onClick={handleAddExpense}>Add Expense</button>
-      </div>
-
-      {/* Date filter section */}
-      <div>
-        <h3>Filters</h3>
-        <input
-          type="date"
-          value={dateFilter.startDate}
-          onChange={(e) => setDateFilter({ ...dateFilter, startDate: e.target.value })}
-        />
-        <input
-          type="date"
-          value={dateFilter.endDate}
-          onChange={(e) => setDateFilter({ ...dateFilter, endDate: e.target.value })}
-        />
-        <button onClick={handleDateFilter}>Filter by Date</button>
       </div>
 
       {/* Balances section */}
